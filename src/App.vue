@@ -1,26 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <h1>Страница с постами</h1>
+    <my-button @click="showDialog">Создать пост</my-button>
+    <my-dialog v-model:show="dialogVisible">
+      <post-form @create="createPost" />
+    </my-dialog>
+
+    <post-list v-bind:posts="posts" @remove="removePost" />
+
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import PostList from './components/PostList.vue'
+import PostForm from './components/PostForm.vue'
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    PostList, PostForm
+  },
+  data() {
+    return {
+      posts: [
+        { id: 1, title: 'Js1', body: 'Описание поста' },
+        { id: 2, title: 'Js1', body: 'Описание поста1' },
+        { id: 3, title: 'Js1', body: 'Описание поста2' },
+        { id: 4, title: 'Js1', body: 'Описание поста3' },
+      ],
+      dialogVisible: false
+
+    }
+  },
+  methods: {
+    createPost(post) {
+      this.posts.push(post)
+      this.dialogVisible = false
+    },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id != post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+#app {}
 </style>
